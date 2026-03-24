@@ -2,11 +2,9 @@ http:
   pprof:
     port: 6060
     enabled: false
-  address: 127.0.0.1:3000
+  address: 0.0.0.0:3000
   session_ttl: 720h
-users:
-  - name: root
-    password: $2b$12$D3zeMIBFfzcQTqGqB.k7GOkMvqx1jgsrdiRCn2kwOHl.kNmmPfMom
+users: []
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
@@ -14,7 +12,7 @@ language: ""
 theme: auto
 dns:
   bind_hosts:
-    - 127.0.0.1
+    - 0.0.0.0
   port: 5591
   anonymize_client_ip: false
   ratelimit: 0
@@ -23,19 +21,20 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+    - '#tcp://168.95.1.1'
+    - '#tcp://210.87.250.59'
+    - udp://223.6.6.6
+    - tcp://180.184.1.1
+    - udp://52.80.52.52
+    - tcp://114.114.114.119
+    - '[/x.com/facebook.com/sb.adtidy.org/gh.io/ghcr.io/git.io/github.com/github.dev/githubusercontent.com/windows.net/brave.com/jsdelivr.net/qzz.io/us.kg/xx.kg/dpdns.org/fastly.com/tailscale.com/uptodown.com/duckduckgo.com/openwrt.org/]tls://oqat7ywrbk.cloudflare-gateway.com'
+    - '#sdns://AQMAAAAAAAAADDkuOS45Ljk6ODQ0MyBnyEe4yHWM0SAkVUO-dWdG3zTfHYTAC4xHA2jfgh2GPhkyLmRuc2NyeXB0LWNlcnQucXVhZDkubmV0'
   upstream_dns_file: ""
   bootstrap_dns:
-    - 119.29.29.29
     - 223.5.5.5
-    - 223.6.6.6
-    - 1.1.1.1
     - 8.8.8.8
-  fallback_dns:
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-  upstream_mode: load_balance
+  fallback_dns: []
+  upstream_mode: parallel
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -47,25 +46,25 @@ dns:
     - 127.0.0.0/8
     - ::1/128
   cache_enabled: true
-  cache_size: 67108864
+  cache_size: 4194304
   cache_ttl_min: 0
   cache_ttl_max: 0
-  cache_optimistic: true
+  cache_optimistic: false
   cache_optimistic_answer_ttl: 30s
   cache_optimistic_max_age: 12h
   bogus_nxdomain: []
-  aaaa_disabled: false
+  aaaa_disabled: true
   enable_dnssec: false
   edns_client_subnet:
     custom_ip: ""
-    enabled: true
+    enabled: false
     use_custom: false
   max_goroutines: 300
   handle_ddr: true
   ipset: []
   ipset_file: ""
   bootstrap_prefer_ipv6: false
-  upstream_timeout: 10s
+  upstream_timeout: 1s
   private_networks: []
   use_private_ptr_resolvers: false
   local_ptr_upstreams: []
@@ -95,23 +94,53 @@ tls:
 querylog:
   dir_path: ""
   ignored: []
-  interval: 24h
+  interval: 2160h
   size_memory: 1000
   enabled: true
+  ignored_enabled: false
   file_enabled: true
 statistics:
   dir_path: ""
   ignored: []
   interval: 24h
   enabled: true
+  ignored_enabled: false
 filters:
+  - enabled: false
+    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+    name: AdGuard DNS filter
+    id: 1
+  - enabled: false
+    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
+    name: AdAway Default Blocklist
+    id: 2
   - enabled: true
-    url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/AWAvenue-Ads-Rule.txt
-    name: AWAvenue
-    id: 1732747955
+    url: https://fastly.jsdelivr.net/gh/Cats-Team/AdRules@main/dns.txt
+    name: adrules
+    id: 1774270313
+  - enabled: true
+    url: https://gcore.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Extension/GoodbyeAds-Xiaomi-Extension.txt
+    name: xiaomi
+    id: 1774270314
+  - enabled: true
+    url: https://fastly.jsdelivr.net/gh/jdlingyu/ad-wars/master/hosts
+    name: adwar
+    id: 1774270315
+  - enabled: true
+    url: https://fastly.jsdelivr.net/gh/Pideo1/bbbfg@main/myadrules.txt
+    name: self
+    id: 1774270316
+  - enabled: true
+    url: https://fastly.jsdelivr.net/gh/Pideo1/bbbfg@main/black.txt
+    name: qingya
+    id: 1774270317
+  - enabled: true
+    url: https://fastly.jsdelivr.net/gh/4fuu/AdGuard-Home-PCDN@main/ban.txt
+    name: pcdn
+    id: 1774270318
 whitelist_filters: []
 user_rules:
-  - ""
+  - '@@||connectivitycheck.vivo.com.cn^'
 dhcp:
   enabled: false
   interface_name: ""
@@ -130,8 +159,8 @@ dhcp:
     ra_slaac_only: false
     ra_allow_slaac: false
 filtering:
-  blocking_ipv4: ""
-  blocking_ipv6: ""
+  blocking_ipv4: 61.147.221.38
+  blocking_ipv6: '::'
   blocked_services:
     schedule:
       time_zone: Asia/Shanghai
@@ -146,7 +175,7 @@ filtering:
     pixabay: true
     yandex: true
     youtube: true
-  blocking_mode: default
+  blocking_mode: custom_ip
   parental_block_host: family-block.dns.adguard.com
   safebrowsing_block_host: standard-block.dns.adguard.com
   rewrites: []
@@ -155,8 +184,8 @@ filtering:
   safesearch_cache_size: 1048576
   parental_cache_size: 1048576
   cache_time: 30
-  filters_update_interval: 72
-  blocked_response_ttl: 10
+  filters_update_interval: 0
+  blocked_response_ttl: 4294967292
   filtering_enabled: true
   rewrites_enabled: true
   parental_enabled: false
@@ -166,7 +195,7 @@ clients:
   runtime_sources:
     whois: true
     arp: true
-    rdns: true
+    rdns: false
     dhcp: true
     hosts: true
   persistent: []
@@ -183,4 +212,4 @@ os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 32
+schema_version: 33
