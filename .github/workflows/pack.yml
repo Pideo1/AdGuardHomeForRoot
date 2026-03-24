@@ -2,9 +2,6 @@ name: Pack AdGuardHomeForRoot
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "[0-9]*"
 
 permissions:
   contents: write
@@ -29,10 +26,10 @@ jobs:
           set -euo pipefail
           case "${{ matrix.arch }}" in
             arm64)
-              echo "archive_url=https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_arm64.tar.gz" >> "$GITHUB_OUTPUT"
+              echo "archive_url=https://static.adguard.com/adguardhome/edge/AdGuardHome_linux_arm64.tar.gz" >> "$GITHUB_OUTPUT"
               ;;
             armv7)
-              echo "archive_url=https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_armv7.tar.gz" >> "$GITHUB_OUTPUT"
+              echo "archive_url=https://static.adguard.com/adguardhome/edge/AdGuardHome_linux_armv7.tar.gz" >> "$GITHUB_OUTPUT"
               ;;
             *)
               echo "Unsupported arch: ${{ matrix.arch }}" >&2
