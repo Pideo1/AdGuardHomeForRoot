@@ -2,7 +2,10 @@ name: Pack AdGuardHomeForRoot
 
 on:
   workflow_dispatch:
-
+  push:
+    tags:
+      - "[0-9]*"
+      
 permissions:
   contents: write
 
